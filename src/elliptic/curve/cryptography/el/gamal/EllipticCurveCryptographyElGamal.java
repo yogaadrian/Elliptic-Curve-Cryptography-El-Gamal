@@ -5,6 +5,8 @@
  */
 package elliptic.curve.cryptography.el.gamal;
 
+import Point.Point;
+
 /**
  *
  * @author yoga
@@ -16,6 +18,7 @@ public class EllipticCurveCryptographyElGamal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
     }
     
 }

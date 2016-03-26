@@ -18,7 +18,7 @@ public class Point {
         x=0;
         y=0;
     }
-    public Point(long x,long y,long mod){
+    public Point(long x, long y, long mod){
         this.mod=mod;
         this.x=((x<0) ? x+mod : x);
         this.y=((y<0) ? y+mod : y);

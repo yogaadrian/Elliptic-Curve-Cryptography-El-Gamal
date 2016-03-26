@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package elliptic.curve.cryptography.el.gamal;
+package Message;
 
 import static java.lang.Math.sqrt;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.ArrayList;
+import Point.Point;
 
 /**
  *
@@ -16,7 +18,7 @@ import java.util.Arrays;
  */
 public class Message {
     String plain;    
-    /* Point p[] */
+    ArrayList<Point> message = new ArrayList<>();
     int a;
     int b;
     long p;
@@ -28,6 +30,20 @@ public class Message {
         this.b = b;
         this.p = p;
         this.k = k;
+    }
+    
+    public Message(Point[] pt, int a, int b, long p, int k) {
+        for (int i = 0; i < pt.length; i++) {
+            message.add(pt[i]);
+        }
+        this.a = a;
+        this.b = b;
+        this.p = p;
+        this.k = k;
+    }
+    
+    public String getPlain() {
+        return plain;
     }
     
     private int stringToInt(String s) {
@@ -46,7 +62,9 @@ public class Message {
         String ret = "";
         
         for ( int i = 0; i < 3; i++ ) {
-            ret = (char)(l % 256) + ret;
+            if (l % 256 != 0) {
+                ret = (char)(l % 256) + ret;
+            }
             l = l / 256;
         }
         
@@ -69,8 +87,8 @@ public class Message {
         return y;
     }
     
-    public void encode(String s) {
-        String msg[] = s.split("(?<=\\G..)");
+    public void encode() {
+        String msg[] = plain.split("(?<=\\G..)");
         
         for (int i = 0; i < msg.length; i++) {
             int m = stringToInt(msg[i]);
@@ -89,13 +107,16 @@ public class Message {
                 x = (m * (k + offset)) + n;
                 y = getY(x);            
             }
-            System.out.println("y=" + y + " x="+ x);
-            decode(x, (int)y);
+            //System.out.println("y=" + y + " x="+ x);
+            message.add(new Point((long)x, (long)y, 0L));
         }
     }
     
-    public void decode(int x, int y) {
-        System.out.println("Str= " + intToString((x-1)/k));
+    public void decode() {
+        plain = "";
+        for ( Point p: message ){
+            plain += intToString(((int)p.getX()-1)/k);
+        }
     }
     
 }

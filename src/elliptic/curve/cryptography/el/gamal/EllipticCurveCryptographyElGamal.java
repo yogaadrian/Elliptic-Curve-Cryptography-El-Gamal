@@ -5,6 +5,7 @@
  */
 package elliptic.curve.cryptography.el.gamal;
 
+import Message.Message;
 import Point.Point;
 
 /**
@@ -18,7 +19,10 @@ public class EllipticCurveCryptographyElGamal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
+        Message m = new Message("hai apakabar", -1, 1, 1283, 10);
+        m.encode();
+        m.decode();
+        System.out.println(m.getPlain());
     }
     
 }

@@ -77,10 +77,10 @@ public class Message {
         
         long q = (long)(Math.pow(x,3) + x*a + b)%p;   
         
-        /* Karena gatau lagi cara nyari kongruensi, dicoba terus maksimal 50x */
-        for (int i = 0; i < 50; i++) {
+        /* Karena gatau lagi cara nyari kongruensi, dicoba terus maksimal 1000x */
+        for (int i = 0; i < 1000; i++) {
             y = sqrt(q);
-            if ((int)y == y) { i = 50; }  
+            if ((int)y == y) { i = 1000; }  
             q += p;
         }
                 
@@ -107,12 +107,14 @@ public class Message {
                 x = (m * (k + offset)) + n;
                 y = getY(x);            
             }
-            //System.out.println("y=" + y + " x="+ x);
+            System.out.println("y=" + y + " x="+ x);
+            System.out.println("offset=" + offset + " n="+ n);
             message.add(new Point((long)x, (long)y, 0L));
         }
     }
     
     public void decode() {
+        //System.out.println("Str= " + intToString((x-1)/k));
         plain = "";
         for ( Point p: message ){
             plain += intToString(((int)p.getX()-1)/k);

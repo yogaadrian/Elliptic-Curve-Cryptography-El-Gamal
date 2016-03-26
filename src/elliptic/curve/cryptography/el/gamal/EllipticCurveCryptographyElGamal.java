@@ -19,7 +19,7 @@ public class EllipticCurveCryptographyElGamal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Message m = new Message("hai apakabar", -1, 1, 1283, 10);
+        Message m = new Message("feryandi@gmail.com", -1, 1, 1283, 10);
         m.encode();
         m.decode();
         System.out.println(m.getPlain());

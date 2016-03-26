@@ -5,3 +5,9 @@ dist/
 nbdist/
 nbactions.xml
 .nb-gradle/
+
+nbproject/project.xml
+*.properties
+nbproject/build-impl.xml
+*.xml
+manifest.mf

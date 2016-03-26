@@ -11,3 +11,4 @@ nbproject/project.xml
 nbproject/build-impl.xml
 *.xml
 manifest.mf
+/Elliptic-Curve-Cryptography-El-Gamal/nbproject/private/

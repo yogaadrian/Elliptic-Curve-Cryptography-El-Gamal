@@ -109,7 +109,7 @@ public class Message {
             }
             System.out.println("y=" + y + " x="+ x);
             System.out.println("offset=" + offset + " n="+ n);
-            message.add(new Point((long)x, (long)y, 0L));
+            message.add(new Point((long)x, (long)y, p));
         }
     }
     

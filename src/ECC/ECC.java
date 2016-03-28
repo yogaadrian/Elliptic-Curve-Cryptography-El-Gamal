@@ -5,7 +5,9 @@
  */
 package ECC;
 
+import Message.Pair;
 import Point.Point;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -51,4 +53,28 @@ public class ECC {
         this.pub = pub;
     }
     
+    public ArrayList<Pair> encyrpt(Point[] plain, int k) {
+        ArrayList<Pair> ret = new ArrayList<>();
+        
+        for (Point p: plain) {
+            ret.add(new Pair(base.multiply(k, a), p.add(pub.multiply(k, a))));
+        }
+        
+        return ret;
+    }
+    
+    public Point[] decrypt(ArrayList<Pair> cipher, int k) {
+        ArrayList<Point> ret = new ArrayList<>();
+        
+        for (Pair p: cipher) {
+            Point bkB = (base.multiply(k, a)).multiply(pri, a);
+            
+            ret.add((p.second()).subtract(bkB));
+        }
+        
+        Point[] r = new Point[ret.size()];
+        r = ret.toArray(r);
+        
+        return r;        
+    }
 }

@@ -405,9 +405,10 @@ public class MainMenu extends javax.swing.JFrame {
             Message message= new Message(fr.FileToString(fileNameInput.getText()),ecc.getA(),ecc.getB(),ecc.getP(),10);
             message.encode();
             
-            ecc.encyrpt(message.getMessage(), 10);
+            System.out.println("ok here2");
             
             fr.SaveFileArrPoint(textOutputNameInsert.getText(),ecc.encyrpt(message.getMessage(), 10));
+            System.out.println("ok here3");
         } catch (IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -20,8 +20,10 @@ public class Point {
     }
     public Point(long x, long y, long mod){
         this.mod=mod;
-        this.x=((x<0) ? x+mod : x);
-        this.y=((y<0) ? y+mod : y);
+        /*this.x=((x<0) ? x+mod : x);
+        this.y=((y<0) ? y+mod : y);*/
+        this.x = bePositive(x, mod);
+        this.y = bePositive(y, mod);
     }
     
     public boolean isEqual(Point p){
@@ -31,6 +33,13 @@ public class Point {
             return false;
     }
     
+    private long bePositive(long a, long mod) {
+        while ( a < 0 ) {
+            a = a + mod;
+        }
+        return a;
+    }
+    
     public long getX(){
         return x;
     }
@@ -38,10 +47,12 @@ public class Point {
         return y;
     }
     public void setX(long x){
-        this.x=((x<0) ? x+mod : x);
+        //this.x=((x<0) ? x+mod : x);        
+        this.x = bePositive(x, mod);
     }
     public void setY(long y){
-        this.y=((y<0) ? y+mod : y);
+        //this.y=((y<0) ? y+mod : y);
+        this.y = bePositive(y, mod);
     }
     
     public long inversemod(long base,long mod){
@@ -70,9 +81,9 @@ public class Point {
             if(xgradien==0){
                 System.out.println("takhingga");
                 return this;
-            }
-            xgradien=((xgradien<0) ? xgradien+mod : xgradien);
-            ygradien=((ygradien<0) ? ygradien+mod : ygradien);
+            }            
+            xgradien = bePositive(xgradien, mod);
+            ygradien = bePositive(ygradien, mod);
             xgradien=inversemod(xgradien,mod);
             gradien=(ygradien*xgradien)%mod;
             long xhasil=(((long) pow((double)gradien,2))-p.getX()-x)%mod;

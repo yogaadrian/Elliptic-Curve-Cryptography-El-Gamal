@@ -71,10 +71,15 @@ public class ECC {
     
     public Pair[] encyrpt(Point[] plain, int k) {
         ArrayList<Pair> ret = new ArrayList<>();
-        
-        for (Point p: plain) {
-            ret.add(new Pair(base.multiply(k, a), p.add(pub.multiply(k, a))));
+
+        for (Point p: plain) {        
+            System.out.println("(" + p.getX() + ", " + p.getY() + ")");
+            Point f = base.multiply(k, a);
+            Point s = p.add(pub.multiply(k, a));
+            System.out.println("{ (" + f.getX() + ", " + f.getY() + "), (" + s.getX() + ", " + s.getY() + ") }");
+            ret.add(new Pair(f, s));
         }
+        System.out.println("is here?");
         Pair[] pair=new Pair[ret.size()];
         pair=ret.toArray(pair);
         return pair;
@@ -84,9 +89,12 @@ public class ECC {
         ArrayList<Point> ret = new ArrayList<>();
         
         for (Pair p: cipher) {
+            System.out.println("{ (" + (p.first()).getX() + ", " + (p.first()).getY() + "), (" + (p.second()).getX() + ", " + (p.second()).getY() + ") }");
             Point bkB = (base.multiply(k, a)).multiply(pri, a);
+            bkB = (p.second()).subtract(bkB);
+            System.out.println("(" + bkB.getX() + ", " + bkB.getY() + ")");
             
-            ret.add((p.second()).subtract(bkB));
+            ret.add(bkB);
         }
         
         Point[] r = new Point[ret.size()];

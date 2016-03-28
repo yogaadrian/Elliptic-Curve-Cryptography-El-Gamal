@@ -87,7 +87,7 @@ public class Message {
         long q = (long)(Math.pow(x,3) + x*a + b)%p;   
         
         /* Karena gatau lagi cara nyari kongruensi, dicoba terus maksimal 1000x */
-        int n = 10000;
+        int n = 500000;
         for (int i = 0; i < n; i++) {
             y = sqrt(q);
             if ((int)y == y) { i = n+1; }  
@@ -117,8 +117,8 @@ public class Message {
                 x = (m * (k + offset)) + n;
                 y = getY(x);        
             }
-            /*System.out.println("y=" + y + " x="+ x);
-            System.out.println("offset=" + offset + " n="+ n);*/
+            System.out.println("y=" + y + " x="+ x);
+            System.out.println("offset=" + offset + " n="+ n);
             message.add(new Point((long)x, (long)y, p));
         }
     }

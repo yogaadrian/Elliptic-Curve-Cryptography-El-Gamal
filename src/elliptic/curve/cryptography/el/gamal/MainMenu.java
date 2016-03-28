@@ -42,7 +42,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MainMenu extends javax.swing.JFrame {
 
     File input;
-    ECC ecc=new ECC(1,2,100003);  
+    ECC ecc=new ECC(1,2,2000003);  
     
     File output;
     Image imageOutput;
@@ -51,7 +51,7 @@ public class MainMenu extends javax.swing.JFrame {
      * Creates new form MainMenu
      */
     public MainMenu() {
-        ecc.setBase(new Point(1,4,100003));
+        ecc.setBase(new Point(1,4,2000003));
       initComponents();        
     }
     

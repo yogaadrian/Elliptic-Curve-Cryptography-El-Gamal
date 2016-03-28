@@ -136,6 +136,7 @@ public class Point {
             else{
                p=p.add(this);
             }
+            //System.out.println("p: (" + p.getX() + ", " + p.getY() + ")");
         }
         return p;
     }

@@ -74,8 +74,11 @@ public class ECC {
 
         for (Point p: plain) {        
             System.out.println("(" + p.getX() + ", " + p.getY() + ")");
+            System.out.println("pub: " + pub + " | k: " + k + " | a: " + a);
+            System.out.println("base: (" + base.getX() + ", " + base.getY() + ")");
             Point f = base.multiply(k, a);
             Point s = p.add(pub.multiply(k, a));
+            System.out.println("kbB: (" + (pub.multiply(k, a)).getX() + ", " + (pub.multiply(k, a)).getY() + ")");
             System.out.println("{ (" + f.getX() + ", " + f.getY() + "), (" + s.getX() + ", " + s.getY() + ") }");
             ret.add(new Pair(f, s));
         }
@@ -90,7 +93,10 @@ public class ECC {
         
         for (Pair p: cipher) {
             System.out.println("{ (" + (p.first()).getX() + ", " + (p.first()).getY() + "), (" + (p.second()).getX() + ", " + (p.second()).getY() + ") }");
-            Point bkB = (base.multiply(k, a)).multiply(pri, a);
+            System.out.println("pri: " + pri + " | a: " + a);
+            
+            Point bkB = (p.first()).multiply(pri, a);
+            System.out.println("bkB: (" + bkB.getX() + ", " + bkB.getY() + ")");
             bkB = (p.second()).subtract(bkB);
             System.out.println("(" + bkB.getX() + ", " + bkB.getY() + ")");
             

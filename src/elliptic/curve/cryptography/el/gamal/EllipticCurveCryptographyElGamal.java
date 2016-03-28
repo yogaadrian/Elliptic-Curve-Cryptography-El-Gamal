@@ -5,8 +5,10 @@
  */
 package elliptic.curve.cryptography.el.gamal;
 
+import FileReader.FileReader;
 import Message.Message;
 import Point.Point;
+import java.io.IOException;
 
 /**
  *
@@ -17,12 +19,14 @@ public class EllipticCurveCryptographyElGamal {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        Message m = new Message("feryandi@gmail.com", -1, 1, 1283, 10);
-        m.encode();
-        m.decode();
-        System.out.println(m.getPlain());
+        FileReader fr=new FileReader();
+        System.out.println(fr.getPrivateKey("pri.txt"));
+        
+        System.out.println(fr.getPublicKey("pub.txt",15).getX());
+        
+        System.out.println(fr.getPublicKey("pub.txt",15).getY());
     }
     
 }

@@ -22,7 +22,6 @@ import java.util.logging.Logger;
  * @author kevin
  */
 public class FileReader {
-    public String PSNR="";
 
     /**
      * @param args the command line arguments
@@ -83,5 +82,23 @@ public class FileReader {
         String[] keys=key.split(" ");
         Point p=new Point(Integer.parseInt(keys[0]),Integer.parseInt(keys[1]),mod);
         return p;
+    }
+    
+    public void SaveFileArrPoint(String path, Point[] points) throws IOException{
+        String content= "";
+        for (Point point : points) {
+            content = content + String.valueOf(point.getX()) + " " + String.valueOf(point.getY()) + " ";
+        }
+        savefile(path,StringToBytes(content));
+    }
+    
+    public Point[] getPointsFromFile(String path,int p) throws IOException{
+        String content=FileToString(path);
+        String[] splitcontent=content.split(" ");
+        Point[] points= new Point[splitcontent.length/2];
+        for(int i=0;i<splitcontent.length;i=i+2){
+            points[i/2]= new Point((long)Integer.parseInt(splitcontent[i]),(long)Integer.parseInt(splitcontent[i+1]),p);
+        }
+        return points;
     }
 }

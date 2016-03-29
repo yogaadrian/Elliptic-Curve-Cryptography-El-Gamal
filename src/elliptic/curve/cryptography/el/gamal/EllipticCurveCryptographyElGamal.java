@@ -5,6 +5,7 @@
  */
 package elliptic.curve.cryptography.el.gamal;
 
+import ECC.ECC;
 import FileReader.FileReader;
 import Message.Message;
 import Point.Point;
@@ -27,6 +28,12 @@ public class EllipticCurveCryptographyElGamal {
         System.out.println(fr.getPublicKey("pub.txt",15).getX());
         
         System.out.println(fr.getPublicKey("pub.txt",15).getY());
+        
+        ECC ecc = new ECC(1, 2, 100003);
+
+        ecc.setBase(new Point(1,4,100003));
+        ecc.generatePublicKey(21);
+        System.out.println("(" + ecc.getPub().getX() + ", " + ecc.getPub().getY() + ")");
     }
     
 }

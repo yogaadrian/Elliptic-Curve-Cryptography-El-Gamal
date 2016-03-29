@@ -31,6 +31,22 @@ public class ECC {
         this.p = p;
     }
     
+    public Point getPub() {
+        return pub;
+    }
+    
+    public long getP(){
+        return p;
+    }
+ 
+    public int getA(){
+        return (int)a;
+    }
+    
+    public int getB(){
+        return (int)b;
+    }
+    
     public void setBase (Point p) {
         base = p;
     }
@@ -53,14 +69,15 @@ public class ECC {
         this.pub = pub;
     }
     
-    public ArrayList<Pair> encyrpt(Point[] plain, int k) {
+    public Pair[] encyrpt(Point[] plain, int k) {
         ArrayList<Pair> ret = new ArrayList<>();
         
         for (Point p: plain) {
             ret.add(new Pair(base.multiply(k, a), p.add(pub.multiply(k, a))));
         }
-        
-        return ret;
+        Pair[] pair=new Pair[ret.size()];
+        pair=ret.toArray(pair);
+        return pair;
     }
     
     public Point[] decrypt(ArrayList<Pair> cipher, int k) {

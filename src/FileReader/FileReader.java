@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package FileReader;
+import Message.Pair;
 import Point.Point;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -37,7 +38,7 @@ public class FileReader {
     return hex(Float.floatToRawIntBits(f));
     }
     
-    private static String FileToString(String stringpath) throws IOException{
+    public static String FileToString(String stringpath) throws IOException{
         String content="";
         Path path=Paths.get(stringpath);
         byte[] rawData = Files.readAllBytes(path);
@@ -47,19 +48,19 @@ public class FileReader {
         return content;
     }
     
-    private static String getFileExtension(File file) {
+    public static String getFileExtension(File file) {
         String fileName = file.getName();
         if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
         return fileName.substring(fileName.lastIndexOf(".")+1);
         else return "";
     }
     
-    private static String GetExtension(String stringpath){
+    public static String GetExtension(String stringpath){
         File file = new File(stringpath);
         return getFileExtension(file);
     }
     
-    private static void savefile(String stringpath,byte[] content) throws FileNotFoundException, IOException{
+    public static void savefile(String stringpath,byte[] content) throws FileNotFoundException, IOException{
         FileOutputStream fos = new FileOutputStream(stringpath);
             fos.write(content);
             fos.close();
@@ -77,28 +78,30 @@ public class FileReader {
         return Integer.parseInt(key);
     }       
     
-    public Point getPublicKey(String path,int mod) throws IOException{
+    public Point getPublicKey(String path,long mod) throws IOException{
         String key=FileToString(path);
         String[] keys=key.split(" ");
         Point p=new Point(Integer.parseInt(keys[0]),Integer.parseInt(keys[1]),mod);
         return p;
     }
     
-    public void SaveFileArrPoint(String path, Point[] points) throws IOException{
+    public void SaveFileArrPoint(String path, Pair[] pairpoints) throws IOException{
         String content= "";
-        for (Point point : points) {
-            content = content + String.valueOf(point.getX()) + " " + String.valueOf(point.getY()) + " ";
+        for (Pair ppoint : pairpoints) {
+            content = content + String.valueOf(ppoint.first().getX()) + " " + String.valueOf(ppoint.first().getY()) + " " + String.valueOf(ppoint.second().getX()) + " " + String.valueOf(ppoint.second().getY()) + " ";
         }
         savefile(path,StringToBytes(content));
     }
     
-    public Point[] getPointsFromFile(String path,int p) throws IOException{
+    public Pair[] getPairPointsFromFile(String path,long p) throws IOException{
         String content=FileToString(path);
         String[] splitcontent=content.split(" ");
-        Point[] points= new Point[splitcontent.length/2];
-        for(int i=0;i<splitcontent.length;i=i+2){
-            points[i/2]= new Point((long)Integer.parseInt(splitcontent[i]),(long)Integer.parseInt(splitcontent[i+1]),p);
+        Pair[] pairpoints= new Pair[splitcontent.length/4];
+        for(int i=0;i<splitcontent.length;i=i+4){
+            Point p1= new Point((long)Integer.parseInt(splitcontent[i]),(long)Integer.parseInt(splitcontent[i+1]),p);
+            Point p2=new Point((long)Integer.parseInt(splitcontent[i+2]),(long)Integer.parseInt(splitcontent[i+3]),p);;
+            pairpoints[i/4]= new Pair(p1,p2);
         }
-        return points;
+        return pairpoints;
     }
 }

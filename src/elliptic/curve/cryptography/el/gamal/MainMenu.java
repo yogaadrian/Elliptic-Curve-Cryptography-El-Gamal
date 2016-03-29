@@ -5,7 +5,11 @@
  */
 package Main;
 
+import ECC.ECC;
 import FileReader.FileReader;
+import Message.Message;
+import Message.Pair;
+import Point.Point;
 import java.awt.Color;
 
 import java.awt.Graphics;
@@ -20,6 +24,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -32,14 +38,11 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-/**
- *
- * @author kevin
- */
+
 public class MainMenu extends javax.swing.JFrame {
 
     File input;
-    
+    ECC ecc=new ECC(1,2,100003);  
     
     File output;
     Image imageOutput;
@@ -48,6 +51,7 @@ public class MainMenu extends javax.swing.JFrame {
      * Creates new form MainMenu
      */
     public MainMenu() {
+        ecc.setBase(new Point(1,4,100003));
       initComponents();        
     }
     
@@ -69,25 +73,23 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnSelectFile = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        textKeyInsert = new javax.swing.JTextField();
+        publicKeyInsert = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         textOutputNameInsert = new javax.swing.JTextField();
-        textKeyInsert1 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         btnInsertStegano = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         btn_openImage1 = new javax.swing.JButton();
-        imageNameInput1 = new javax.swing.JTextField();
+        encryptedMessageExtract = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        privateKeyExtract = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        outputNameExtract = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         btnExtractStegano = new javax.swing.JButton();
 
@@ -113,9 +115,9 @@ public class MainMenu extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Steganography Settings"));
 
-        textKeyInsert.addActionListener(new java.awt.event.ActionListener() {
+        publicKeyInsert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textKeyInsertActionPerformed(evt);
+                publicKeyInsertActionPerformed(evt);
             }
         });
 
@@ -125,22 +127,13 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel10.setText("Output Filename");
 
         textOutputNameInsert.setText("output");
-
-        textKeyInsert1.addActionListener(new java.awt.event.ActionListener() {
+        textOutputNameInsert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textKeyInsert1ActionPerformed(evt);
+                textOutputNameInsertActionPerformed(evt);
             }
         });
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Your Private Key");
-
-        jButton2.setText("Open File");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jButton3.setText("Open File");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -154,26 +147,26 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel10)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel7))
-                .add(18, 18, 18)
-                .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jPanel5Layout.createSequentialGroup()
-                        .add(textKeyInsert1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jLabel10))
+                    .add(jPanel5Layout.createSequentialGroup()
+                        .add(28, 28, 28)
                         .add(jLabel6)
-                        .add(18, 18, 18)
-                        .add(textKeyInsert, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 121, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(textOutputNameInsert))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jLabel7)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(textOutputNameInsert)
+                    .add(jPanel5Layout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(publicKeyInsert, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 335, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .add(jPanel5Layout.createSequentialGroup()
-                .add(84, 84, 84)
-                .add(jButton2)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(197, 197, 197)
                 .add(jButton3)
-                .add(76, 76, 76))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -181,13 +174,10 @@ public class MainMenu extends javax.swing.JFrame {
                 .add(20, 20, 20)
                 .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(textKeyInsert1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(textKeyInsert, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(publicKeyInsert, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jButton3)
-                    .add(jButton2))
+                .add(jButton3)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 47, Short.MAX_VALUE)
                 .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel10)
@@ -249,12 +239,12 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        imageNameInput1.setEditable(false);
-        imageNameInput1.setForeground(new java.awt.Color(110, 110, 110));
-        imageNameInput1.setText("No Message Selected");
-        imageNameInput1.addActionListener(new java.awt.event.ActionListener() {
+        encryptedMessageExtract.setEditable(false);
+        encryptedMessageExtract.setForeground(new java.awt.Color(110, 110, 110));
+        encryptedMessageExtract.setText("No Message Selected");
+        encryptedMessageExtract.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                imageNameInput1ActionPerformed(evt);
+                encryptedMessageExtractActionPerformed(evt);
             }
         });
 
@@ -283,13 +273,19 @@ public class MainMenu extends javax.swing.JFrame {
                 .add(jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
+        privateKeyExtract.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                privateKeyExtractActionPerformed(evt);
+            }
+        });
+
         jLabel5.setText("Output File Name");
 
-        jTextField4.setText("output");
-        jTextField4.setToolTipText("");
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        outputNameExtract.setText("output");
+        outputNameExtract.setToolTipText("");
+        outputNameExtract.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                outputNameExtractActionPerformed(evt);
             }
         });
 
@@ -309,7 +305,7 @@ public class MainMenu extends javax.swing.JFrame {
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jPanel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jTextField3))
+                        .add(privateKeyExtract))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(199, 199, 199)
                         .add(jButton1)
@@ -318,7 +314,7 @@ public class MainMenu extends javax.swing.JFrame {
                         .add(70, 70, 70)
                         .add(jLabel5)
                         .add(17, 17, 17)
-                        .add(jTextField4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)))
+                        .add(outputNameExtract, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -326,14 +322,14 @@ public class MainMenu extends javax.swing.JFrame {
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jTextField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(privateKeyExtract, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jPanel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(4, 4, 4)
                 .add(jButton1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 30, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel5)
-                    .add(jTextField4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(outputNameExtract, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -354,7 +350,7 @@ public class MainMenu extends javax.swing.JFrame {
                     .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jLabel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jPanel4Layout.createSequentialGroup()
-                        .add(imageNameInput1)
+                        .add(encryptedMessageExtract)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(btn_openImage1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 133, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jPanel4Layout.createSequentialGroup()
@@ -369,7 +365,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .add(jLabel4)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(imageNameInput1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(encryptedMessageExtract, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(btn_openImage1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -401,72 +397,19 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInsertSteganoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertSteganoActionPerformed
-        // TODO add your handling code here:
         try {
-            boolean enc;
-            enc = rbVigenereInsert.isSelected();
+            // TODO add your handling code here:
+            FileReader fr=new FileReader();
+            Point publickey=fr.getPublicKey(publicKeyInsert.getText(),ecc.getP());
+            ecc.setPublicKey(publickey);
+            Message message= new Message(fr.FileToString(fileNameInput.getText()),ecc.getA(),ecc.getB(),ecc.getP(),10);
+            message.encode();
             
-            Path path = Paths.get(imageNameInputInsert.getText());
+            ecc.encyrpt(message.getMessage(), 10);
             
-            FileReader f = new FileReader();
-                        
-            f.encryptStegano(imageNameInputInsert.getText(), textOutputNameInsert.getText(), 
-                            fileNameInput.getText(), 
-                            textKeyInsert.getText(), Double.valueOf(textThresholdInsert.getText()), enc);
-                        
-            JFrame frame = new JFrame();
-            JLabel label = new JLabel();
-            Image imageInput;
-                    
-            imageInput = ImageIO.read(new File(textOutputNameInsert.getText()));
-            label.setIcon(new ImageIcon(imageInput));
-            
-            
-            JLabel filePNSR = new JLabel();
-            filePNSR.setText("PSNR : "+ f.PSNR);
-            JLabel filesize = new JLabel();
-            JLabel fileEx = new JLabel(" File extension " + "\t" + " : " + (input.getName().substring(((int)input.getName().length())-3)));
-            String fs = " File Size " + "\t" + " : " + String.valueOf(input.length()) + " bytes";
-
-            fileEx.setSize(200,15);
-            fileEx.setLocation(15, 15);
-            fileEx.setBackground(Color.white);
-            fileEx.setOpaque(true);
-
-            filesize.setLocation(15, 35);
-            filesize.setText(fs);
-            filesize.setSize(200, 15);
-            filesize.setBackground(Color.white);
-            filesize.setOpaque(true);
-
-            filePNSR.setSize(200, 15);
-            filePNSR.setLocation(15, 55);
-            filePNSR.setBackground(Color.white);
-            filePNSR.setOpaque(true);
-            
-            frame.add(filesize);
-            frame.add(fileEx);
-            frame.add(label);
-
-            int fW = 200;
-            int fH = 200;
-            if ( imageInput.getWidth(frame) > fW ) {
-              fW = imageInput.getWidth(frame);
-            }
-            if ( imageInput.getHeight(frame) > fH ) {
-              fH = imageInput.getHeight(frame);
-            }
-
-            frame.add(filePNSR);
-            frame.add(filesize);
-            frame.add(fileEx);
-            frame.add(label);
-
-            frame.setSize(fW, fH);
-            frame.setVisible(true);
-
+            fr.SaveFileArrPoint(textOutputNameInsert.getText(),ecc.encyrpt(message.getMessage(), 10));
         } catch (IOException ex) {
-            Logger.getLogger(FileReader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     
     }//GEN-LAST:event_btnInsertSteganoActionPerformed
@@ -485,47 +428,60 @@ public class MainMenu extends javax.swing.JFrame {
         chooseFile.showOpenDialog(null);
         File f = chooseFile.getSelectedFile();
         String filename = f.getAbsolutePath();
-        imageNameInput1.setText(filename);
+        encryptedMessageExtract.setText(filename);
     }//GEN-LAST:event_btn_openImage1ActionPerformed
 
     private void btnExtractSteganoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExtractSteganoActionPerformed
-            boolean enc = rbVigenereExtract.isSelected();
-            String getImage = imageNameInput1.getText();
-            String fileName = jTextField4.getText();
-            String key = jTextField3.getText();
-            FileReader f = new FileReader();
-            f.decryptStegano( getImage, fileName, 
-                              key, Double.valueOf(jTextField7.getText()), enc);
-            JOptionPane.showMessageDialog(null, "Message have been extracted. Check your folder.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            FileReader fr=new FileReader();
+            long privatekey=fr.getPrivateKey(privateKeyExtract.getText());
+            ecc.setPrivateKey(privatekey);
+            Pair[] points=fr.getPairPointsFromFile(encryptedMessageExtract.getText(), ecc.getP());
+            Message message=new Message(ecc.decrypt(new ArrayList<Pair>(Arrays.asList(points)), 10),ecc.getA(),ecc.getB(),ecc.getP(),10);
+            message.decode();
+            fr.savefile(outputNameExtract.getText(),fr.StringToBytes(message.getPlain()));
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnExtractSteganoActionPerformed
 
-    private void textKeyInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textKeyInsertActionPerformed
+    private void encryptedMessageExtractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encryptedMessageExtractActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textKeyInsertActionPerformed
+    }//GEN-LAST:event_encryptedMessageExtractActionPerformed
 
-    private void textKeyInsert1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textKeyInsert1ActionPerformed
+    private void outputNameExtractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputNameExtractActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textKeyInsert1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void imageNameInput1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageNameInput1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_imageNameInput1ActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_outputNameExtractActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        JFileChooser chooseFile = new JFileChooser();
+        chooseFile.showOpenDialog(null);
+        File f = chooseFile.getSelectedFile();
+        String filename = f.getAbsolutePath();
+        privateKeyExtract.setText(filename);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void privateKeyExtractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_privateKeyExtractActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_privateKeyExtractActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        JFileChooser chooseFile = new JFileChooser();
+        chooseFile.showOpenDialog(null);
+        File f = chooseFile.getSelectedFile();
+        String filename = f.getAbsolutePath();
+        publicKeyInsert.setText(filename);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void textOutputNameInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textOutputNameInsertActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textOutputNameInsertActionPerformed
+
+    private void publicKeyInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_publicKeyInsertActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_publicKeyInsertActionPerformed
 
     /**
      * @param args the command line arguments
@@ -559,13 +515,12 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnInsertStegano;
     private javax.swing.JButton btnSelectFile;
     private javax.swing.JButton btn_openImage1;
+    private javax.swing.JTextField encryptedMessageExtract;
     private javax.swing.ButtonGroup extractCipherGroup;
     private javax.swing.JTextField fileNameInput;
-    private javax.swing.JTextField imageNameInput1;
     private javax.swing.JFileChooser imageOpener;
     private javax.swing.ButtonGroup insertCipherGroup;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -580,10 +535,9 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField textKeyInsert;
-    private javax.swing.JTextField textKeyInsert1;
+    private javax.swing.JTextField outputNameExtract;
+    private javax.swing.JTextField privateKeyExtract;
+    private javax.swing.JTextField publicKeyInsert;
     private javax.swing.JTextField textOutputNameInsert;
     // End of variables declaration//GEN-END:variables
 }

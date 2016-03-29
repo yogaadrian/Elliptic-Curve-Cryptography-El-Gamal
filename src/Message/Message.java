@@ -45,6 +45,15 @@ public class Message {
     public String getPlain() {
         return plain;
     }
+    public Point[] getMessage(){
+        Point[] points=new Point[message.size()];
+        points=message.toArray(points);
+        return points;
+    }
+    
+    public void setMessage(Point[] mess){
+        message=new ArrayList<Point>(Arrays.asList(mess));
+    }
     
     private int stringToInt(String s) {
         /* For security reasons, representasi maksimum 2 karakter */

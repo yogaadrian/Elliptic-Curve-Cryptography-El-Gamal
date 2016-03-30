@@ -240,7 +240,7 @@
             </Container>
             <Component class="javax.swing.JButton" name="btnInsertStegano">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Start Stegano"/>
+                <Property name="text" type="java.lang.String" value="Start Ciphering"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInsertSteganoActionPerformed"/>
@@ -443,7 +443,7 @@
             </Container>
             <Component class="javax.swing.JButton" name="btnExtractStegano">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Extract Message"/>
+                <Property name="text" type="java.lang.String" value="Start Deciphering"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExtractSteganoActionPerformed"/>

@@ -185,7 +185,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        btnInsertStegano.setText("Start Stegano");
+        btnInsertStegano.setText("Start Ciphering");
         btnInsertStegano.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInsertSteganoActionPerformed(evt);
@@ -333,7 +333,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        btnExtractStegano.setText("Extract Message");
+        btnExtractStegano.setText("Start Deciphering");
         btnExtractStegano.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExtractSteganoActionPerformed(evt);
@@ -405,10 +405,10 @@ public class MainMenu extends javax.swing.JFrame {
             Message message= new Message(fr.FileToString(fileNameInput.getText()),ecc.getA(),ecc.getB(),ecc.getP(),10);
             message.encode();
             
-            System.out.println("ok here2");
-            
             fr.SaveFileArrPoint(textOutputNameInsert.getText(),ecc.encyrpt(message.getMessage(), 10));
-            System.out.println("ok here3");
+            
+            JOptionPane.showMessageDialog(null, "Message have been crypted. Check your folder.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    
         } catch (IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -441,6 +441,9 @@ public class MainMenu extends javax.swing.JFrame {
             Message message=new Message(ecc.decrypt(new ArrayList<Pair>(Arrays.asList(points)), 10),ecc.getA(),ecc.getB(),ecc.getP(),10);
             message.decode();
             fr.savefile(outputNameExtract.getText(),fr.StringToBytes(message.getPlain()));
+             
+            JOptionPane.showMessageDialog(null, "Message have been decrypted. Check your folder.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    
         } catch (IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
